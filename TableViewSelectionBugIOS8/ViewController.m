@@ -9,7 +9,9 @@
 #import "ViewController.h"
 #import "Cell.h"
 
-@implementation ViewController
+@implementation ViewController {
+    BOOL _didShowInstructions;
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -24,6 +26,16 @@
                            selector:@selector(_keyboardWillHide:)
                                name:UIKeyboardWillHideNotification
                              object:nil];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    if(!_didShowInstructions) {
+        _didShowInstructions = YES;
+        
+        [self showAlertWithText:@"To reproduce the bug:\n1. Select first row in table view.\n2. Scroll table view to the bottom.\n3. Tap 'Done' button above keyboard.\nUnexpectedly previously selected cell will stay highlighted forever and indexPathForSelectedRow will report nil."];
+    }
 }
 
 #pragma mark - UITableViewDataSource
